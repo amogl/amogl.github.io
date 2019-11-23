@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
-<g>
-	<circle cx="14.008" cy="13.975" r="1.992"/>
-	<path d="M13.941,9.992c1.1,0,1.992-0.893,1.992-1.992c0-4.4-3.567-7.967-7.967-7.967C3.566,0.033,0,3.6,0,8
-		c0,3.638,2.438,6.705,5.769,7.66c0.698,0.199,1.436,0.307,2.198,0.307c0.002,0,0.005,0,0.008,0l0,0
-		c1.096-0.005,1.984-0.895,1.984-1.992c0-1.088-0.874-1.973-1.958-1.99v-0.002c-0.012,0-0.022,0.001-0.034,0.001
-		c-2.2,0-3.983-1.784-3.983-3.983c0-0.646,0.154-1.254,0.427-1.793c0.656-1.299,2.002-2.19,3.557-2.19
-		C10.166,4.017,11.95,5.8,11.95,8C11.95,9.1,12.842,9.992,13.941,9.992z"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <clipPath id="clip-safari-pinned-tab">
+      <rect width="16" height="16"/>
+    </clipPath>
+  </defs>
+  <g id="safari-pinned-tab" clip-path="url(#clip-safari-pinned-tab)">
+    <g id="Component_55_10" data-name="Component 55 – 10">
+      <rect id="Rectangle_384" data-name="Rectangle 384" width="16" height="16" opacity="0"/>
+      <g id="Group_859" data-name="Group 859" transform="translate(0 3)">
+        <path id="Path_26" data-name="Path 26" d="M7.464-58.24v1.173A3.613,3.613,0,0,0,4.6-58.24,4.83,4.83,0,0,0,0-53.162a4.83,4.83,0,0,0,4.6,5.078,3.613,3.613,0,0,0,2.866-1.173v.9h2.885V-58.24Zm-2.53,7.425a2.2,2.2,0,0,1-2.289-2.347,2.2,2.2,0,0,1,2.289-2.347,2.2,2.2,0,0,1,2.289,2.347A2.2,2.2,0,0,1,4.934-50.815Z" transform="translate(0 58.24)"/>
+        <path id="Path_31" data-name="Path 31" d="M236.458-27.545a1.839,1.839,0,0,0,1.827-1.827,1.839,1.839,0,0,0-1.827-1.827,1.839,1.839,0,0,0-1.827,1.827A1.839,1.839,0,0,0,236.458-27.545Z" transform="translate(-222.285 37.702)"/>
+      </g>
+    </g>
+  </g>
 </svg>

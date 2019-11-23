@@ -3,16 +3,16 @@
 /*------------------------------*/
 /*----------Colours----------*/
 /*--General--*/
-$primary-color: #3ABADE;
+$primary-color: #2AE3BE;
 $secondary-color: darken($primary-color, 10%);
 
-$primary-text-color: #49453D;
+$primary-text-color: #31383A;
 $secondary-text-color: #95989A;
 
 $border-color: #F1F1F1;
 
 $light-background: #F1F1F1;
-$dark-background: #425563;
+$dark-background: #31383A;
 
 $danger: #D11E46;
 $warning: #EFAC4E;
@@ -32,9 +32,6 @@ $button-primary-background: $primary-color;
 $button-secondary-background: #B4B4B4;
 
 
-
-
-
 /*----------Fonts----------*/
 $font-primary: 'Montserrat', sans-serif;
 $font-secondary: 'Montserrat', sans-serif;
@@ -51,3 +48,7 @@ $break-xs: 480px;
 $break-sm: 768px;
 $break-md: 992px;
 $break-lg: 1200px;
+
+
+//-----Debug
+$show-debug:false;
