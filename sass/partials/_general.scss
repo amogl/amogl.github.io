@@ -23,7 +23,6 @@ body{
     text-indent: -1000em;
 
     @media screen and (max-width: $break-xs) {
-        background: aqua;
         max-width: 70%;
     }
 
@@ -33,7 +32,7 @@ body{
 
 .wrapper{
     transform: translate(0,50%); animation: wrapperMoveUp 1s ease forwards; animation-delay: 1s;
-    
+
     h1{
         animation: fadeIn 1s ease forwards;
     }
