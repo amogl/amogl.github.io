@@ -1,0 +1,91 @@
+html,
+body{
+    font-size: 16px; 
+    height: 100%;
+}
+body{
+    margin: 0; 
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.logo{
+    width: 3em; 
+    height: 3em; 
+    @include svg-bg('../images/logo'); 
+    background-size: contain; 
+    margin: 0 auto; 
+    overflow: hidden;
+    text-indent: -1000em;
+}
+
+
+
+.wrapper{
+    transform: translate(0,50%); animation: wrapperMoveUp 1s ease forwards; animation-delay: 1s;
+
+
+    h1{
+        animation: fadeIn 1s ease forwards;
+    }
+    h2{
+        font-size: 1.3rem; font-weight: 400; margin: 0.4em 0;
+    }
+
+}
+
+
+.text{
+    margin: 2.5em 0 1em 0; text-align: center; opacity: 0; animation: fadeInDown 1s ease forwards; animation-delay: 1s;
+    a{
+        text-decoration: none;
+    }
+}
+
+.links{
+    display: flex; flex-wrap: wrap; justify-content: center; @include list-reset; opacity: 0; animation: fadeInDown 1s ease forwards; animation-delay: 1s;
+    li{
+        width: 2.5em; transition: 0.3s ease all;
+        + li{
+            margin-left: 0.3em;
+        }
+        a{
+            display: block;
+        }
+
+        path{
+            fill: #A9B8BE; transition: 0.3s ease all;
+        }
+
+        &.codepen:hover{
+            path{
+                fill: #000000;
+            }
+        }
+        &.youtube:hover{
+            path{
+                fill: #FF0000;
+            }
+        }
+        &.dribbble:hover{
+            path{
+                fill: #E74D89;
+            }
+        }
+        &.linkedin:hover{
+            path{
+                fill: #0177B5;
+            }
+        }
+    }
+}
+
+
+
+
+
+@keyframes wrapperMoveUp{
+    from{transform: translate(0, 50%);}
+    to{transform: translate(0,0)};
+}

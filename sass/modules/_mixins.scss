@@ -1,0 +1,216 @@
+/*------------------------------*/
+/*----------Mixins----------*/
+/*------------------------------*/
+/*----------Border radius----------*/
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+       -moz-border-radius: $radius;
+        -ms-border-radius: $radius;
+            border-radius: $radius;
+}
+
+/*----------Transition----------*/
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+@mixin transition-timing-function ($timing){
+    -webkit-transition-timing-function: #{$timing};
+    transition-timing-function: #{$timing};
+}
+
+/*----------Transform----------*/
+// generic transform
+@mixin transform($transforms) {
+	   -moz-transform: $transforms;
+	     -o-transform: $transforms;
+	    -ms-transform: $transforms;
+	-webkit-transform: $transforms;
+          transform: $transforms;
+}
+// rotate
+@mixin rotate ($deg) {
+  @include transform(rotate(#{$deg}deg));
+}
+// scale
+@mixin scale($scale) {
+	 @include transform(scale($scale));
+}
+// translate
+@mixin translate ($x, $y) {
+   @include transform(translate($x, $y));
+}
+// skew
+@mixin skew ($x, $y) {
+   @include transform(skew(#{$x}deg, #{$y}deg));
+}
+//transform origin
+@mixin transform-origin ($origin) {
+    -moz-transform-origin: $origin;
+	     -o-transform-origin: $origin;
+	    -ms-transform-origin: $origin;
+	-webkit-transform-origin: $origin;
+          transform-origin: $origin;
+}
+
+/*----------Filter----------*/
+@mixin filter($filter-type,$filter-amount) {
+  -webkit-filter: $filter-type+unquote('(#{$filter-amount})');
+  -moz-filter: $filter-type+unquote('(#{$filter-amount})');
+  -ms-filter: $filter-type+unquote('(#{$filter-amount})');
+  -o-filter: $filter-type+unquote('(#{$filter-amount})');
+  filter: $filter-type+unquote('(#{$filter-amount})');
+}
+
+/*----------Box Shadow----------*/
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $top $left $blur $color;
+    -moz-box-shadow:inset $top $left $blur $color;
+    box-shadow:inset $top $left $blur $color;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $color;
+    -moz-box-shadow: $top $left $blur $color;
+    box-shadow: $top $left $blur $color;
+  }
+}
+
+/*----------Opacity----------*/
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+/*----------Background Size----------*/
+@mixin background-size($size) {
+    background-size: $size;
+    -ms-behavior: url(/scripts/backgroundsize.min.htc);
+}
+
+/*----------Backdrop Filter----------*/
+@mixin backdrop-filter($type, $amount) {
+    -webkit-backdrop-filter: $type+unquote('(#{$amount})');
+    backdrop-filter: $type+unquote('(#{$amount})');
+}
+
+/*----------Position sticky----------*/
+@mixin position-sticky{
+    position: -webkit-sticky;
+    position: sticky;
+}
+
+/*----------List reset----------*/
+@mixin list-reset{
+    list-style: none; padding: 0; margin: 0;
+}
+
+/*----------Animations----------*/
+@mixin keyframes($animation-name) {
+    @-webkit-keyframes #{$animation-name} {
+        @content;
+    }
+    @-moz-keyframes #{$animation-name} {
+        @content;
+    }
+    @-ms-keyframes #{$animation-name} {
+        @content;
+    }
+    @-o-keyframes #{$animation-name} {
+        @content;
+    }
+    @keyframes #{$animation-name} {
+        @content;
+    }
+}
+@mixin animation($str) {
+  -webkit-animation: #{$str};
+  -moz-animation: #{$str};
+  -ms-animation: #{$str};
+  -o-animation: #{$str};
+  animation: #{$str};
+}
+@mixin animation-delay($delay){
+    -webkit-animation-delay: #{$delay};
+    animation-delay: #{$delay};
+}
+@mixin animation-duration($duration){
+    -webkit-animation-duration: #{$duration};
+    animation-duration: #{$duration};
+}
+@mixin animation-direction($direction){
+    -webkit-animation-direction: #{$direction};
+    animation-direction: #{$direction};
+}
+@mixin animation-fill-mode($mode){
+    -webkit-animation-fill-mode: #{$mode};
+    animation-fill-mode: #{$mode};
+}
+
+/*----------Background svg fallback----------*/
+@mixin svg-bg($path,$position: center,$repeat: no-repeat) {
+  background-image: url(#{$path}.png);
+  background-image: linear-gradient(transparent, transparent), url(#{$path}.svg);
+  background-position: #{$position};
+  background-repeat: #{$repeat};
+}
+
+/*----------Before/after Clear----------*/
+@mixin content-clear {
+    content: ''; display: block; clear: both;
+}
+
+/*----------Overflow scroll----------*/
+@mixin overflow-scroll {
+    overflow-y: scroll; -webkit-overflow-scrolling: touch;
+}
+
+/*----------PX to REM----------*/
+@function calculate-rem($size) {
+    $remSize: $size / 16px;
+    @return #{$remSize}rem;
+}
+@mixin font-size($size) {
+    font-size: $size; //Fallback in px
+    font-size: calculate-rem($size);
+}
+
+
+
+
+/*----------Gradients----------*/
+@mixin gradient($start-color, $end-color, $type){
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c0d238+0,09abbd+100 */
+    @if $type  == "diagonal"{
+        background: $start-color;
+        background: -moz-linear-gradient(-45deg, $start-color 0%, $end-color 100%);
+        background: -webkit-linear-gradient(-45deg, $start-color 0%,$end-color 100%);
+        background: linear-gradient(135deg, $start-color 0%,$end-color 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$start-color}', endColorstr='#{$end-color}',GradientType=1 );
+    }@if $type  == "horizontal"{
+        background: $start-color;
+        background: -moz-linear-gradient(left, $start-color 0%, $end-color 100%);
+        background: -webkit-linear-gradient(left, $start-color 0%,$end-color 100%);
+        background: linear-gradient(to right, $start-color 0%,$end-color 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$start-color}', endColorstr='#{$end-color}',GradientType=1 );
+    }@if $type  == "vertical"{
+        background: $start-color;
+        background: -moz-linear-gradient(top,  $start-color 0%, $end-color 100%);
+        background: -webkit-linear-gradient(top,  $start-color 0%,$end-color 100%);
+        background: linear-gradient(to bottom,  $start-color 0%,$end-color 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$start-color}', endColorstr='#{$end-color}',GradientType=0 );
+    }
+}
+
+/*----------Text colour----------*/
+//Check if text colour should be black or white depending on background
+@mixin text-color($c1) {
+    @if (.2126*red($c1) + .7152*green($c1) + .0722*blue($c1))/255 <= .5 {
+        color: mix(#FFF, $c1, 95%);
+    } @else {
+        color: mix(#000, $c1, 70%);
+    }
+}

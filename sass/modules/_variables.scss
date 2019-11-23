@@ -1,0 +1,53 @@
+/*------------------------------*/
+/*----------Variables----------*/
+/*------------------------------*/
+/*----------Colours----------*/
+/*--General--*/
+$primary-color: #3ABADE;
+$secondary-color: darken($primary-color, 10%);
+
+$primary-text-color: #49453D;
+$secondary-text-color: #95989A;
+
+$border-color: #F1F1F1;
+
+$light-background: #F1F1F1;
+$dark-background: #425563;
+
+$danger: #D11E46;
+$warning: #EFAC4E;
+$success: #5CB85C;
+
+$black: #000000;
+
+/*--Main nav--*/
+$main-nav-background: $primary-color;
+
+/*--Section titles--*/
+$section-title-background: $dark-background;
+$section-subtitle-background: $light-background;
+
+/*--Buttons--*/
+$button-primary-background: $primary-color;
+$button-secondary-background: #B4B4B4;
+
+
+
+
+
+/*----------Fonts----------*/
+$font-primary: 'Montserrat', sans-serif;
+$font-secondary: 'Montserrat', sans-serif;
+/*--Weights--*/
+$weight-light: 100;
+$weight-regular: 400;
+$weight-semibold: 500;
+$weight-bold: 600;
+
+
+/*-----Breakpoints-----*/
+$break-xxs: 320px;
+$break-xs: 480px;
+$break-sm: 768px;
+$break-md: 992px;
+$break-lg: 1200px;

@@ -1,0 +1,24 @@
+@import 'modules/all';
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap');
+
+/*-----Text highlight-----*/
+::selection {
+  background: $primary-color; @include text-color($primary-color);
+}
+::-moz-selection {
+  background: $primary-color; @include text-color($primary-color);
+}
+
+
+body{
+    font-family: $font-primary; color: $primary-text-color;
+}
+
+a{
+    color: $primary-color; font-weight: $weight-regular;
+    &:hover,
+    &:focus{
+        color: $primary-color;
+    }
+}

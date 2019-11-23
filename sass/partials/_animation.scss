@@ -1,0 +1,60 @@
+/*------------------------------*/
+/*----------Animation----------*/
+/*------------------------------*/
+.js-loading *,
+.js-loading *:before,
+.js-loading *:after {
+    animation-play-state: paused !important;
+}
+
+
+
+@include keyframes(fadeIn) {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@include keyframes(fadeInUp) {
+    0% { opacity: 0; @include translate(0,150px);}
+    100% { opacity: 1; @include translate(0,0);}
+}
+@include keyframes(fadeInDown) {
+    0% { opacity: 0; @include translate(0,-150px);}
+    100% { opacity: 1; @include translate(0,0);}
+}
+@include keyframes(fadeInLeft) {
+    0% { opacity: 0; @include translate(-150px,0);}
+    100% { opacity: 1; @include translate(0,0);}
+}
+@include keyframes(fadeInRight) {
+    0% { opacity: 0; @include translate(150px,0);}
+    100% { opacity: 1; @include translate(0,0);}
+}
+
+
+
+/*------------------------------*/
+/*----------Standard animation classes----------*/
+/*------------------------------*/
+.animate{
+    &.animate-fade-in {
+        @include animation('fadeIn .6s 1');
+    }
+    &.animate-fade-in-up {
+        @include animation('fadeInUp .6s 1');
+    }
+    &.animate-fade-in-down {
+        @include animation('fadeInDown .6s 1');
+    }
+    &.animate-fade-in-left {
+        @include animation('fadeInLeft .6s 1');
+    }
+    &.animate-fade-in-right {
+        @include animation('fadeInRight .6s 1');
+    }
+}
+
+
+//If "Reduce motion" is enabled (safari only)
+@media (prefers-reduced-motion) {
+
+}
