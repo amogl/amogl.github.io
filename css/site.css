@@ -29,6 +29,11 @@
 /*----------Fonts----------*/
 /*--Weights--*/
 /*-----Breakpoints-----*/
+/*
+.example{
+    background-image: get-icon( 'arrow-right', $primary-color);
+}
+*/
 /*------------------------------*/
 /*----------Mixins----------*/
 /*------------------------------*/
@@ -60,6 +65,11 @@
 /*----------Fonts----------*/
 /*--Weights--*/
 /*-----Breakpoints-----*/
+/*
+.example{
+    background-image: get-icon( 'arrow-right', $primary-color);
+}
+*/
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap");
 /*-----Text highlight-----*/
 ::selection {
@@ -114,26 +124,39 @@ body {
 }
 
 .logo {
+  overflow: hidden;
+  margin: 0;
+  /*
   font-size: 16px;
-  width: 22.6875em;
-  height: 6.875em;
-  background-image: url(../images/logo.png);
-  background-image: linear-gradient(transparent, transparent), url(../images/logo.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  margin: 0 auto;
+  width: 22.6875em; 
+  max-width: 70%;
+  height: 6.875em; 
+  @include svg-bg('../images/logo'); 
+  background-size: contain; 
+  margin: 0 auto; 
   overflow: hidden;
   text-indent: -1000em;
-}
-@media screen and (max-width: 480px) {
-  .logo {
-    max-width: 70%;
+
+
+
+  @media screen and (max-width: $break-xs) {
+
   }
+  */
+}
+.logo img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+.logo span {
+  position: absolute;
+  left: -10000em;
 }
 
 .topsection {
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -221,9 +244,10 @@ body {
 }
 
 .wrapper {
-  transform: translate(0, 50%);
   animation: wrapperMoveUp 1s ease forwards;
   animation-delay: 1s;
+  padding: 1.875rem;
+  transform: translate(0, 30%);
 }
 .wrapper h1 {
   animation: fadeIn 1s ease forwards;
@@ -235,7 +259,7 @@ body {
 }
 
 .text {
-  margin: 2.5em 0 1em 0;
+  margin: 1.875rem 0 1em 0;
   text-align: center;
   opacity: 0;
   animation: fadeInDown 1s ease forwards;
@@ -259,7 +283,6 @@ body {
   animation-delay: 1s;
 }
 .links li {
-  width: 2.5em;
   transition: 0.3s ease all;
   /*
   &.codepen:hover{
@@ -284,12 +307,35 @@ body {
   }
   */
 }
+.links li.codepen a {
+  background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><rect width="48" height="48" fill="white" opacity="0"/><path d="M19.989,15.736,15.744,18.6v.01L11.5,15.749l4.245-2.863v-.011l4.245,2.863ZM15.744,2.01a1.251,1.251,0,0,0-.64.2L2.669,10.386A1.437,1.437,0,0,0,2,11.169v8.587c0,.563,0,.563.2.829l12.9,8.7a1.06,1.06,0,0,0,.646.187,1.141,1.141,0,0,0,.646-.2l12.9-8.7c.2-.257.2-.257.2-.83V11.158a1.437,1.437,0,0,0-.669-.782L16.384,2.2a1.153,1.153,0,0,0-.64-.192Zm6.293,15.11,4.14,2.792-9.288,6.263V20.591Zm4.278-5.647-4.278,2.885-5.148-3.472V5.272l9.428,6.2Zm.881,2.168v4.2l-3.112-2.1,3.112-2.1ZM9.45,17.131,14.6,20.6v5.582L5.311,19.921,9.45,17.13ZM5.172,11.48,14.6,5.28v5.613l-5.15,3.473L5.171,11.481Zm-.881,2.168,3.112,2.1-3.112,2.1Z" transform="translate(8 7.991)" fill="white"/></svg>');
+}
+.links li.codepen a:hover, .links li.codepen a:focus {
+  background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><rect width="48" height="48" fill="%232AE3BE" opacity="0"/><path d="M19.989,15.736,15.744,18.6v.01L11.5,15.749l4.245-2.863v-.011l4.245,2.863ZM15.744,2.01a1.251,1.251,0,0,0-.64.2L2.669,10.386A1.437,1.437,0,0,0,2,11.169v8.587c0,.563,0,.563.2.829l12.9,8.7a1.06,1.06,0,0,0,.646.187,1.141,1.141,0,0,0,.646-.2l12.9-8.7c.2-.257.2-.257.2-.83V11.158a1.437,1.437,0,0,0-.669-.782L16.384,2.2a1.153,1.153,0,0,0-.64-.192Zm6.293,15.11,4.14,2.792-9.288,6.263V20.591Zm4.278-5.647-4.278,2.885-5.148-3.472V5.272l9.428,6.2Zm.881,2.168v4.2l-3.112-2.1,3.112-2.1ZM9.45,17.131,14.6,20.6v5.582L5.311,19.921,9.45,17.13ZM5.172,11.48,14.6,5.28v5.613l-5.15,3.473L5.171,11.481Zm-.881,2.168,3.112,2.1-3.112,2.1Z" transform="translate(8 7.991)" fill="%232AE3BE"/></svg>');
+}
+.links li.dribbble a {
+  background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><rect width="48" height="48" fill="white" opacity="0"/><path d="M13.2,26.4A13.2,13.2,0,1,1,26.4,13.195,13.209,13.209,0,0,1,13.2,26.4ZM24.327,15a16.609,16.609,0,0,0-7.023-.485,48.07,48.07,0,0,1,2.186,8.033A11.209,11.209,0,0,0,24.327,15ZM17.6,23.592a46.848,46.848,0,0,0-2.4-8.549.191.191,0,0,1-.072.021c-6.363,2.219-8.642,6.629-8.848,7.041A11.223,11.223,0,0,0,13.2,24.48,10.994,10.994,0,0,0,17.6,23.592ZM4.826,20.749A17.976,17.976,0,0,1,13.994,13.3c.144-.052.3-.093.443-.134q-.424-.971-.918-1.91a41.6,41.6,0,0,1-11.591,1.6c0,.113-.01.227-.01.341a11.289,11.289,0,0,0,2.908,7.547ZM2.166,10.9A41.68,41.68,0,0,0,12.592,9.529,73.058,73.058,0,0,0,8.415,3.011,11.315,11.315,0,0,0,2.166,10.9ZM10.56,2.251a59.367,59.367,0,0,1,4.208,6.6A12.777,12.777,0,0,0,20.677,4.78,11.232,11.232,0,0,0,13.2,1.941a11.707,11.707,0,0,0-2.64.309Zm11.364,3.83a15.015,15.015,0,0,1-6.291,4.45l.753,1.631.247.578a26.464,26.464,0,0,1,7.848.361,11.236,11.236,0,0,0-2.558-7.021Z" transform="translate(11 11)" fill="white"/></svg>');
+}
+.links li.dribbble a:hover, .links li.dribbble a:focus {
+  background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><rect width="48" height="48" fill="%232AE3BE" opacity="0"/><path d="M13.2,26.4A13.2,13.2,0,1,1,26.4,13.195,13.209,13.209,0,0,1,13.2,26.4ZM24.327,15a16.609,16.609,0,0,0-7.023-.485,48.07,48.07,0,0,1,2.186,8.033A11.209,11.209,0,0,0,24.327,15ZM17.6,23.592a46.848,46.848,0,0,0-2.4-8.549.191.191,0,0,1-.072.021c-6.363,2.219-8.642,6.629-8.848,7.041A11.223,11.223,0,0,0,13.2,24.48,10.994,10.994,0,0,0,17.6,23.592ZM4.826,20.749A17.976,17.976,0,0,1,13.994,13.3c.144-.052.3-.093.443-.134q-.424-.971-.918-1.91a41.6,41.6,0,0,1-11.591,1.6c0,.113-.01.227-.01.341a11.289,11.289,0,0,0,2.908,7.547ZM2.166,10.9A41.68,41.68,0,0,0,12.592,9.529,73.058,73.058,0,0,0,8.415,3.011,11.315,11.315,0,0,0,2.166,10.9ZM10.56,2.251a59.367,59.367,0,0,1,4.208,6.6A12.777,12.777,0,0,0,20.677,4.78,11.232,11.232,0,0,0,13.2,1.941a11.707,11.707,0,0,0-2.64.309Zm11.364,3.83a15.015,15.015,0,0,1-6.291,4.45l.753,1.631.247.578a26.464,26.464,0,0,1,7.848.361,11.236,11.236,0,0,0-2.558-7.021Z" transform="translate(11 11)" fill="%232AE3BE"/></svg>');
+}
+.links li.linkedin a {
+  background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><rect width="48" height="48" fill="white" opacity="0"/><path d="M80.438,11.85h5.175V28.5H80.438Zm2.589-8.276a3,3,0,1,1-3,3,3,3,0,0,1,3-3m5.831,8.276H93.82v2.269h.068a5.43,5.43,0,0,1,4.9-2.689c5.24,0,6.208,3.448,6.208,7.931v9.132h-5.17v-8.1c0-1.931-.035-4.414-2.689-4.414-2.693,0-3.106,2.1-3.106,4.275v8.236H88.858V11.838Z" transform="translate(-68.025 8.426)" fill="white"/></svg>');
+}
+.links li.linkedin a:hover, .links li.linkedin a:focus {
+  background-image: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><rect width="48" height="48" fill="%232AE3BE" opacity="0"/><path d="M80.438,11.85h5.175V28.5H80.438Zm2.589-8.276a3,3,0,1,1-3,3,3,3,0,0,1,3-3m5.831,8.276H93.82v2.269h.068a5.43,5.43,0,0,1,4.9-2.689c5.24,0,6.208,3.448,6.208,7.931v9.132h-5.17v-8.1c0-1.931-.035-4.414-2.689-4.414-2.693,0-3.106,2.1-3.106,4.275v8.236H88.858V11.838Z" transform="translate(-68.025 8.426)" fill="%232AE3BE"/></svg>');
+}
 .links li + li {
   margin-left: 0.6em;
 }
 .links li a {
   display: block;
   transition: 0.3s ease all;
+  display: block;
+  width: 2.5em;
+  height: 2.5em;
+  text-indent: -1000em;
+  overflow: hidden;
 }
 .links li a:hover, .links li a:focus {
   transform: translate(0, -0.5em);
@@ -302,14 +348,6 @@ body {
   transition: 0.3s ease all;
 }
 
-@keyframes wrapperMoveUp {
-  from {
-    transform: translate(0, 50%);
-  }
-  to {
-    transform: translate(0, 10%);
-  }
-}
 /*------------------------------*/
 /*----------Animation----------*/
 /*------------------------------*/
@@ -716,6 +754,14 @@ body {
     -o-transform: translate(0, 0);
     -ms-transform: translate(0, 0);
     -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+@keyframes wrapperMoveUp {
+  0% {
+    transform: translate(0, 30%);
+  }
+  100% {
     transform: translate(0, 0);
   }
 }

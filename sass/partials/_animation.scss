@@ -29,6 +29,11 @@
     0% { opacity: 0; @include translate(150px,0);}
     100% { opacity: 1; @include translate(0,0);}
 }
+@keyframes wrapperMoveUp{
+    0%{transform: translate(0, 30%);} 
+    100%{transform: translate(0,0)};
+}
+
 
 
 

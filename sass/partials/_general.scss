@@ -31,24 +31,38 @@ body{
 }
 
 .logo{
+    overflow: hidden; margin: 0;
+    img{
+        display: block; margin: 0 auto;
+        max-width: 100%;
+    }
+    span{
+        position: absolute; left: -10000em;
+    }
+
+    /*
     font-size: 16px;
     width: 22.6875em; 
+    max-width: 70%;
     height: 6.875em; 
     @include svg-bg('../images/logo'); 
     background-size: contain; 
     margin: 0 auto; 
     overflow: hidden;
     text-indent: -1000em;
+    
+
 
     @media screen and (max-width: $break-xs) {
-        max-width: 70%;
+        
     }
+    */
 
 }
 
 
 .topsection{
-    min-height: 100vh;
+    min-height: 100vh; min-height: 100svh;
     display: flex; 
     align-items: center;
     justify-content: center;
@@ -103,7 +117,7 @@ body{
 
 
 .wrapper{
-    transform: translate(0,50%); animation: wrapperMoveUp 1s ease forwards; animation-delay: 1s;
+    animation: wrapperMoveUp 1s ease forwards; animation-delay: 1s; padding: 1.875rem; transform: translate(0,30%);
 
     h1{
         animation: fadeIn 1s ease forwards;
@@ -116,7 +130,7 @@ body{
 
 
 .text{
-    margin: 2.5em 0 1em 0; text-align: center; opacity: 0; animation: fadeInDown 1s ease forwards; animation-delay: 1s;
+    margin: 1.875rem 0 1em 0; text-align: center; opacity: 0; animation: fadeInDown 1s ease forwards; animation-delay: 1s;
     a{
         text-decoration: none; font-size: 20px; font-weight: 300;
     }
@@ -125,12 +139,23 @@ body{
 .links{
     display: flex; flex-wrap: wrap; justify-content: center; @include list-reset; opacity: 0; animation: fadeInDown 1s ease forwards; animation-delay: 1s;
     li{
-        width: 2.5em; transition: 0.3s ease all;
+        transition: 0.3s ease all;
+
+        @each $social-icon in $social-icons {
+            &.#{$social-icon} a{
+                background-image: get-icon( 'social-#{$social-icon}', white);
+                &:hover,
+                &:focus{
+                    background-image: get-icon( 'social-#{$social-icon}', $primary-color);
+                }
+            }
+        }
+
         + li{
             margin-left: 0.6em;
         }
         a{
-            display: block; transition: 0.3s ease all;
+            display: block; transition: 0.3s ease all; display: block; width: 2.5em; height: 2.5em; text-indent: -1000em; overflow: hidden; 
             &:hover,
             &:focus{
                 transform: translate(0,-0.5em); 
@@ -169,16 +194,6 @@ body{
         */
     }
 }
-
-
-
-
-
-@keyframes wrapperMoveUp{
-    from{transform: translate(0, 50%);}
-    to{transform: translate(0,10%)};
-}
-
 
 
 
