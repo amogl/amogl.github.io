@@ -35,6 +35,8 @@
             box-shadow: 0 .3em .7em rgba(0,0,0,.25);
             background: rgb(28, 29, 37);
 
+            flex-shrink: 0 !important;
+
             margin-right: 1.25rem;
             
             -webkit-backface-visibility: hidden;
@@ -89,17 +91,23 @@
             background: rgba(0,0,0,0.2);
             border-radius: 100rem;
             padding: 0.9375rem;
-            padding-right: 3.75rem;
-
+            padding-right: 2.5rem;
+            max-width: 100%;
             margin: 20px 10px;
+
+            > div{
+                flex-shrink: 1; overflow: hidden;
+            }
             & .intro{
                 font-size: 12px; opacity: 0.6; margin-bottom: 0.3125rem;
             }
             & .title{
                 font-weight: 600; font-size: 20px;
+                white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
             }
             & .subtitle{
                 font-size: 12px; opacity: 0.6; margin-top: 0.3125rem;
+                white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
             }
 
             &.playing{
