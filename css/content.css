@@ -1,3 +1,62 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap");::-moz-selection{background:#3ABADE;color:#113843}::selection{background:#3ABADE;color:#113843}::-moz-selection{background:#3ABADE;color:#113843}body{font-family:"Montserrat",sans-serif;color:#49453D}a{color:#3ABADE;font-weight:400}a:hover,a:focus{color:#3ABADE}
+/*------------------------------*/
+/*----------Mixins----------*/
+/*------------------------------*/
+/*----------Border radius----------*/
+/*----------Transition----------*/
+/*----------Transform----------*/
+/*----------Filter----------*/
+/*----------Box Shadow----------*/
+/*----------Opacity----------*/
+/*----------Background Size----------*/
+/*----------Backdrop Filter----------*/
+/*----------Position sticky----------*/
+/*----------List reset----------*/
+/*----------Animations----------*/
+/*----------Background svg fallback----------*/
+/*----------Before/after Clear----------*/
+/*----------Overflow scroll----------*/
+/*----------PX to REM----------*/
+/*----------Gradients----------*/
+/*----------Text colour----------*/
+/*------------------------------*/
+/*----------Variables----------*/
+/*------------------------------*/
+/*----------Colours----------*/
+/*--General--*/
+/*--Main nav--*/
+/*--Section titles--*/
+/*--Buttons--*/
+/*----------Fonts----------*/
+/*--Weights--*/
+/*-----Breakpoints-----*/
+/*
+.example{
+    background-image: get-icon( 'arrow-right', $primary-color);
+}
+*/
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap");
+/*-----Text highlight-----*/
+::selection {
+  background: #2AE3BE;
+  color: #0d4439;
+}
+
+::-moz-selection {
+  background: #2AE3BE;
+  color: #0d4439;
+}
+
+body {
+  font-family: "Lexend", "Poppins", sans-serif;
+  color: #31383A;
+}
+
+a {
+  color: #2AE3BE;
+  font-weight: 400;
+}
+a:hover, a:focus {
+  color: #2AE3BE;
+}
 
 /*# sourceMappingURL=content.css.map */

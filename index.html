@@ -64,6 +64,8 @@
 	<!-- End Google Tag Manager (noscript) -->
 
 	<div class="topsection">
+
+
 		<div class="wrapper">
 
 			<h1 class="logo"><img src="/images/logo.svg" alt="amogl logo"/><span>Andrew Moglione is a Web Designer based in Liverpool</span></h1>
@@ -85,94 +87,29 @@
 			</ul>
 
 		</div>
-	</div>
 
-	<!--
-	<div class="dribbble-feed animate-in">
-		<h2>Latest Dribbble work</h2>
-		<div id="shots"></div>
-	</div>
 
-	<footer class="footer">&copy; amogl 2023</footer>
-	-->
+		<div class="media stopped">
+			<div class="media-item media-item-lastfm">
+				<div class="artwork">
+					<img src="{Item 3}"/>
+				</div>
+				<div class="info">
+					<div class="intro">I'm currently listening to</div>
+					<div class="title"></div>
+					<div class="subtitle"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
 
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-	<!--
-	<script>
-		// Set the Access Token
-		var accessToken = 'bdf2738210315d8cc21e0428454627804cc120b838b5396c7040fce668f2dd7f';
+	<script src="/scripts/custom.js"></script>
+	<script src="/scripts/jquery.fillcolor.js"></script>
 
-		// Call Dribble v2 API
-		$.ajax({
-			url: 'https://api.dribbble.com/v2/user/shots?per_page=30&access_token='+accessToken,
-			dataType: 'json',
-			type: 'GET',
-			success: function(data) {  
-			if (data.length > 0) { 
-				$.each(data.reverse(), function(i, val) {                
-				$('#shots').prepend(
-					'<a class="shot" target="_blank" href="'+ val.html_url +'" title="' + val.title + '"><div class="info">' + val.title + '</div><img src="'+ val.images.hidpi +'"/></a>'
-					)
-				})
-			}
-			else {
-				$('#shots').append('<p>No shots yet!</p>');
-			}
-			}
-		});
-
-		/*
-			//Image width 800x600 (Animated)
-			val.images.hidpi 
-			//Image width 400x300
-			val.images.normal
-			//Image width 200x150
-			val.images.teaser
-			//Title
-			val.title
-			//Description
-			val.description
-			//URL
-			val.html_url
-		*/
-
-
-		//-------Animate in on scroll -------//
-		$(window).on("scroll", function () {
-			checkScrolledElements();
-		});
-
-		$(document).ready(function () {
-			checkScrolledElements();
-		});
-
-		function checkScrolledElements(){
-			$('.animate-in').each(function () {
-				if (isScrolledIntoView(this, false)) {
-					$(this).addClass('in-view');
-				} else {
-					//$(this).removeClass('in-view');
-				}
-			});
-		}
-
-		function isScrolledIntoView(elem, isTimeline) {
-			var $window = $(window),
-				divisionValue = 1.25,
-				docViewTop = $window.scrollTop(),
-				docViewBottom = docViewTop + $window.height(),
-				elemTop = $(elem).offset().top,
-				elemBottom = elemTop + $(elem).outerHeight();
-			if(isTimeline){
-				divisionValue = 2;
-			}
-			return elemTop < docViewTop + ($window.height() / divisionValue);
-		}
-
-	</script>
-	-->
 
 </body>
 
