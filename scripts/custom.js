@@ -9,7 +9,7 @@ $(document).ready(function(){
             url: 'https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=amogl&api_key=13b29c7c9664ac4eb57a61b39713ee80&format=json&limit=1',
             dataType: 'json',
             success: function(data) {
-                console.log(data); // Debugging statement to see the structure of the response
+                //console.log(data); // Debugging statement to see the structure of the response
 
                 // Check if the 'track' array exists and is not empty
                 if (data.recenttracks && data.recenttracks.track && data.recenttracks.track.length > 0) {
@@ -27,6 +27,7 @@ $(document).ready(function(){
                         $('.media-item-lastfm img').attr('src', imageUrl);
                         $('.media-item-lastfm .title').text(trackName);
                         $('.media-item-lastfm .subtitle').text(artist);
+                        $('.media-item-lastfm .intro').text("I'm currently listening to");
 
                         $('.media').addClass("playing");
                         $('.media').removeClass("stopped");
@@ -43,6 +44,7 @@ $(document).ready(function(){
                             $('.media-item-lastfm img').attr('src', '');
                             $('.media-item-lastfm .title').text('');
                             $('.media-item-lastfm .subtitle').text('');
+                            $('.media-item-lastfm .intro').text('');
                         }, 2000);
 
                         console.log("No track is currently playing.");
@@ -52,7 +54,7 @@ $(document).ready(function(){
                 }
             },
             error: function(xhr, status, error) {
-                console.log("Error:", error); // Debugging statement to see any error message
+                //console.log("Error:", error); // Debugging statement to see any error message
             }
         });
     }

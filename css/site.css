@@ -269,6 +269,7 @@ body {
   transition: 1s ease all;
   max-height: 12.5rem;
   opacity: 0;
+  overflow: hidden;
 }
 .media.playing {
   opacity: 1;
@@ -276,6 +277,7 @@ body {
 .media.stopped {
   opacity: 0;
   max-height: 0;
+  visibility: hidden;
 }
 
 .artwork {

@@ -163,7 +163,7 @@ body{
 
 //-----Media
 .media{
-    transition: 1s ease all; max-height: 12.5rem; opacity: 0;
+    transition: 1s ease all; max-height: 12.5rem; opacity: 0; overflow: hidden;
     //animation: fadeInUp 1s ease forwards; animation-delay: 2s;
 
     //--States
@@ -173,6 +173,7 @@ body{
     &.stopped{
         opacity: 0;
         max-height: 0;
+        visibility: hidden;
     }
 }
 
