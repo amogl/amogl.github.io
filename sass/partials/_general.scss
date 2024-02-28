@@ -163,8 +163,8 @@ body{
 
 //-----Media
 .media{
-    transition: 1s ease all; max-height: 12.5rem; opacity: 0; overflow: hidden;
-    max-width: 600px;
+    transition: 1s ease all; max-height: 12.5rem; opacity: 0; overflow: hidden; width: 100%;
+    display: flex; justify-content: center;
     //animation: fadeInUp 1s ease forwards; animation-delay: 2s;
 
     //--States
@@ -226,7 +226,7 @@ body{
 
 
 .media-item{
-    transition: opacity 1s, height 1s, background-color 2s;
+    transition: opacity 1s, height 1s, background-color 2s; margin-top: 0.625rem;
     margin-bottom: 1.25rem;
     display: flex;
     align-items: center;

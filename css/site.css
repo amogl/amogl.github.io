@@ -270,7 +270,9 @@ body {
   max-height: 12.5rem;
   opacity: 0;
   overflow: hidden;
-  max-width: 600px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 .media.playing {
   opacity: 1;
@@ -327,6 +329,7 @@ body {
 
 .media-item {
   transition: opacity 1s, height 1s, background-color 2s;
+  margin-top: 0.625rem;
   margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
