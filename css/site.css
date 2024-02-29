@@ -96,6 +96,17 @@ a:hover, a:focus {
   color: #2AE3BE;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -253,6 +264,7 @@ body {
   height: 2.5em;
   text-indent: -1000em;
   overflow: hidden;
+  background-position: center;
 }
 .links li a:hover, .links li a:focus {
   transform: translate(0, -0.5em);
@@ -327,8 +339,12 @@ body {
   border-radius: 50%;
 }
 
+a.media-item:hover, a.media-item:focus {
+  transform: scale(1.05);
+}
+
 .media-item {
-  transition: opacity 1s, height 1s, background-color 2s;
+  transition: opacity 1s, height 1s, background-color 2s, transform 0.5s;
   margin-top: 0.625rem;
   margin-bottom: 1.25rem;
   display: flex;
@@ -339,6 +355,8 @@ body {
   max-width: calc(100vw - 2.5rem);
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   outline: 1px solid rgba(255, 255, 255, 0.05);
+  color: currentColor;
+  text-decoration: none;
 }
 @media screen and (min-width: 480px) {
   .media-item {
@@ -353,6 +371,10 @@ body {
     margin-top: 2.5rem;
     border-radius: 1.25rem;
   }
+}
+.media-item:hover, .media-item:focus {
+  color: currentColor;
+  text-decoration: none;
 }
 .media-item .artwork {
   flex-shrink: 0 !important;

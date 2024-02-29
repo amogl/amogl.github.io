@@ -118,7 +118,7 @@ body{
             margin-left: 0.6em;
         }
         a{
-            display: block; transition: 0.3s ease all; display: block; width: 2.5em; height: 2.5em; text-indent: -1000em; overflow: hidden; 
+            display: block; transition: 0.3s ease all; display: block; width: 2.5em; height: 2.5em; text-indent: -1000em; overflow: hidden; background-position: center;
             &:hover,
             &:focus{
                 transform: translate(0,-0.5em); 
@@ -225,8 +225,14 @@ body{
 }
 
 
+a.media-item{
+    &:hover,
+    &:focus{
+        transform: scale(1.05);
+    }
+}
 .media-item{
-    transition: opacity 1s, height 1s, background-color 2s; margin-top: 0.625rem;
+    transition: opacity 1s, height 1s, background-color 2s, transform 0.5s; margin-top: 0.625rem;
     margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
@@ -236,13 +242,20 @@ body{
     max-width: calc(100vw - 2.5rem);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
     outline: 1px solid rgba(255,255,255,0.05);
-
+    color: currentColor;
+    text-decoration: none;
+    
     @media screen and (min-width: $break-xs) {
         padding-right: 2.5rem;
     }
     @media screen and (max-width: $break-xs) {
         flex-direction: column; padding: 0.625rem 1.25rem; text-align: center; margin-top: 2.5rem;
         border-radius: 1.25rem;
+    }
+
+    &:hover,
+    &:focus{
+        color: currentColor; text-decoration: none;
     }
 
     .artwork{

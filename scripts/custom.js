@@ -19,6 +19,7 @@ $(document).ready(function(){
                     if (track["@attr"] && track["@attr"].nowplaying === "true") {
                         var artist = track.artist['#text'];
                         var trackName = track.name;
+                        var trackUrl = track.url;
                         var imageUrl = track.image.find(function(image) {
                             return image.size === 'large';
                         })['#text'];
@@ -28,6 +29,7 @@ $(document).ready(function(){
                         $('.media-item-lastfm .title').text(trackName);
                         $('.media-item-lastfm .subtitle').text(artist);
                         $('.media-item-lastfm .intro').text("I'm currently listening to");
+                        $('.media-item-lastfm').attr('href', trackUrl);
 
                         $('.media').addClass("playing");
                         $('.media').removeClass("stopped");
@@ -45,6 +47,7 @@ $(document).ready(function(){
                             $('.media-item-lastfm .title').text('');
                             $('.media-item-lastfm .subtitle').text('');
                             $('.media-item-lastfm .intro').text('');
+                            $('.media-item-lastfm').attr('href', '');
                         }, 2000);
 
                         console.log("No track is currently playing.");
