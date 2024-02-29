@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+
+        body{
+            background: #31383A;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+
+
+
+        .artwork{
+            width: 5rem;
+            aspect-ratio: 1/1;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;	
+            box-shadow: 0 .3em .7em rgba(0,0,0,.25);
+            background: rgb(28, 29, 37);
+
+            flex-shrink: 0 !important;
+
+            margin-right: 1.25rem;
+            
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            
+            &:before{
+                content: ''; 
+                position: absolute; 
+                width: 100%; 
+                height: 100%;
+                z-index: 2;
+                background:conic-gradient(from -135deg at 50% 50%, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0) 65%, rgba(255, 255, 255, 1) 75%, rgba(255, 255, 255, 0) 85%);
+                mix-blend-mode:  overlay;
+                border-radius: 50%;
+            }
+            &:after{
+                content: '';
+                padding: 0.3em;
+                background: #31383A;
+                z-index: 10;
+                position: absolute;
+                top: 50%; 
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+                box-shadow: inset 0 .2em .2em rgba(0,0,0,.25);
+            }
+            img{
+                display: block;
+                width: 100%; 
+                height: 100%;
+                object-fit: cover;
+                animation: spin 3s infinite linear;
+                border-radius: 50%;
+            }
+        }
+
+
+        @keyframes spin{
+            to{
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .media-item{
+            transition: 0.3s ease all;
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            border-radius: 100rem;
+            padding: 0.9375rem;
+            padding-right: 2.5rem;
+            max-width: 100%;
+            margin: 20px 10px;
+
+            > div{
+                flex-shrink: 1; overflow: hidden;
+            }
+            & .intro{
+                font-size: 12px; opacity: 0.6; margin-bottom: 0.3125rem;
+            }
+            & .title{
+                font-weight: 600; font-size: 20px;
+                white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
+            }
+            & .subtitle{
+                font-size: 12px; opacity: 0.6; margin-top: 0.3125rem;
+                white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
+            }
+
+            &.playing{
+
+            }
+            &.stopped{
+                opacity: 0;
+                height: 0;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    
+
+
+
+    <div class="media-item media-item-trakt">
+        <div class="artwork">
+            <img src="{Item 3}"/>
+        </div>
+        <div>
+            <div class="intro">Im currently watching</div>
+            <div class="title">{Item 2}</div>
+            <div class="subtitle">{Item 1}</div>
+        </div>
+    </div>
+
+    <div class="media-item media-item-lastfm stopped">
+        <div class="artwork">
+            <img src="{Item 3}"/>
+        </div>
+        <div>
+            <div class="intro">Im currently listening to</div>
+            <div class="title">{Item 2}</div>
+            <div class="subtitle">{Item 1}</div>
+        </div>
+    </div>
+    
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+
+        //-----Trakt
+
+        // Last watched is show
+        // [
+        //     {
+        //         "id": 9563467402,
+        //         "watched_at": "2024-02-26T21:34:50.000Z",
+        //         "action": "scrobble",
+        //         "type": "episode",
+        //         "episode": {
+        //             "season": 3,
+        //             "number": 4,
+        //             "title": "Grief Counseling",
+        //             "ids": {
+        //                 "trakt": 182048,
+        //                 "tvdb": 307729,
+        //                 "imdb": "tt0877241",
+        //                 "tmdb": 170162,
+        //                 "tvrage": null
+        //             }
+        //         },
+        //         "show": {
+        //             "title": "The Office",
+        //             "year": 2005,
+        //             "ids": {
+        //                 "trakt": 2302,
+        //                 "slug": "the-office",
+        //                 "tvdb": 73244,
+        //                 "imdb": "tt0386676",
+        //                 "tmdb": 2316,
+        //                 "tvrage": null
+        //             }
+        //         }
+        //     }
+        // ]
+
+        // Last watched is movie
+        // [
+        //     {
+        //         "id": 9564384550,
+        //         "watched_at": "2024-02-27T09:27:49.000Z",
+        //         "action": "watch",
+        //         "type": "movie",
+        //         "movie": {
+        //             "title": "Avatar",
+        //             "year": 2009,
+        //             "ids": {
+        //                 "trakt": 12269,
+        //                 "slug": "avatar-2009",
+        //                 "imdb": "tt0499549",
+        //                 "tmdb": 19995
+        //             }
+        //         }
+        //     }
+        // ]
+
+
+        $(document).ready(function() {
+            var traktAPIKey = '0d0477ed0e9cf3fdca652206c98c2adf513ad01199daa9418b2b233a7cb84f15';
+            var username = 'amogl';
+
+            var apiUrl = 'https://api.trakt.tv/users/' + username + '/history?limit=1';
+
+            $.ajax({
+                url: apiUrl,
+                type: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.setRequestHeader('trakt-api-version', '2');
+                    xhr.setRequestHeader('trakt-api-key', traktAPIKey);
+                },
+                success: function(data) {
+                    console.log(data); // Log the response to see the structure of the data
+                    if (data.length > 0) {
+                        var lastWatchedItem = data[0];
+                        var itemType = lastWatchedItem.type;
+                        var itemName, itemSubtitle;
+
+                        var itemShowNumbers = "";
+                        if (itemType === 'episode') {
+                            itemName = lastWatchedItem.show.title;
+                            itemSubtitle = lastWatchedItem.episode.title;
+                            itemSeasonNumber = lastWatchedItem.episode.season;
+                            itemEpisodeNumber = lastWatchedItem.episode.number;
+                            itemShowNumbers = "S" + itemSeasonNumber + "E" + itemEpisodeNumber + " ";
+                        } else if (itemType === 'movie') {
+                            itemName = lastWatchedItem.movie.title;
+                            itemSubtitle = lastWatchedItem.movie.year;
+                        }
+
+                        // Populate HTML elements with data
+                        $('.media-item-trakt .title').text(itemName);
+                        $('.media-item-trakt .subtitle').text(itemShowNumbers + itemSubtitle);
+                        
+                        // You'll need to fetch images from another service based on the IDs provided by Trakt
+                        // Add code here to fetch images from TMDB, IMDB, or another service
+                    }
+                },
+                error: function(err) {
+                    console.log('Error: ' + err);
+                }
+            });
+        });
+
+
+        //-----Spotify
+        // {
+        //     "recenttracks": {
+        //         "track": [
+        //             {
+        //                 "artist": {
+        //                     "mbid": "54f8c12e-571c-4c5a-9f79-5336b39e84b0",
+        //                     "#text": "The Pretty Reckless"
+        //                 },
+        //                 "streamable": "0",
+        //                 "image": [
+        //                     {
+        //                         "size": "small",
+        //                         "#text": "https://lastfm.freetls.fastly.net/i/u/34s/d1847425e3cf44a5c41c048ba03107c6.jpg"
+        //                     },
+        //                     {
+        //                         "size": "medium",
+        //                         "#text": "https://lastfm.freetls.fastly.net/i/u/64s/d1847425e3cf44a5c41c048ba03107c6.jpg"
+        //                     },
+        //                     {
+        //                         "size": "large",
+        //                         "#text": "https://lastfm.freetls.fastly.net/i/u/174s/d1847425e3cf44a5c41c048ba03107c6.jpg"
+        //                     },
+        //                     {
+        //                         "size": "extralarge",
+        //                         "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/d1847425e3cf44a5c41c048ba03107c6.jpg"
+        //                     }
+        //                 ],
+        //                 "mbid": "0895fb18-33b7-404d-9000-c2abfe0dd3b1",
+        //                 "album": {
+        //                     "mbid": "021e7ac3-0bf1-451f-8117-167039912e52",
+        //                     "#text": "Going to Hell"
+        //                 },
+        //                 "name": "Going to Hell",
+        //                 "@attr": {
+        //                     "nowplaying": "true"
+        //                 },
+        //                 "url": "https://www.last.fm/music/The+Pretty+Reckless/_/Going+to+Hell"
+        //             },
+        //             {
+        //                 "artist": {
+        //                     "mbid": "dba7b6f3-8123-4a07-99d6-306acc41b7cd",
+        //                     "#text": "Alphabeat"
+        //                 },
+        //                 "streamable": "0",
+        //                 "image": [
+        //                     {
+        //                         "size": "small",
+        //                         "#text": "https://lastfm.freetls.fastly.net/i/u/34s/744fabdc66a25a09b404df5329655287.jpg"
+        //                     },
+        //                     {
+        //                         "size": "medium",
+        //                         "#text": "https://lastfm.freetls.fastly.net/i/u/64s/744fabdc66a25a09b404df5329655287.jpg"
+        //                     },
+        //                     {
+        //                         "size": "large",
+        //                         "#text": "https://lastfm.freetls.fastly.net/i/u/174s/744fabdc66a25a09b404df5329655287.jpg"
+        //                     },
+        //                     {
+        //                         "size": "extralarge",
+        //                         "#text": "https://lastfm.freetls.fastly.net/i/u/300x300/744fabdc66a25a09b404df5329655287.jpg"
+        //                     }
+        //                 ],
+        //                 "mbid": "c4a1da3d-6afc-409c-8ab0-abfd7073c1ba",
+        //                 "album": {
+        //                     "mbid": "3291beae-0551-4471-a0bf-a8d3f88a346c",
+        //                     "#text": "This Is Alphabeat"
+        //                 },
+        //                 "name": "Fascination",
+        //                 "url": "https://www.last.fm/music/Alphabeat/_/Fascination",
+        //                 "date": {
+        //                     "uts": "1709026822",
+        //                     "#text": "27 Feb 2024, 09:40"
+        //                 }
+        //             }
+        //         ],
+        //         "@attr": {
+        //             "user": "Amogl",
+        //             "totalPages": "9390",
+        //             "page": "1",
+        //             "perPage": "1",
+        //             "total": "9390"
+        //         }
+        //     }
+        // }
+
+        $(document).ready(function(){
+            var lastTimestamp = 0; // Store the timestamp of the last track
+
+            // Function to fetch and update track data
+            function updateTrackData() {
+                $.ajax({
+                    url: 'https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=amogl&api_key=13b29c7c9664ac4eb57a61b39713ee80&format=json&limit=1',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data); // Debugging statement to see the structure of the response
+
+                        // Check if the 'track' array exists and is not empty
+                        if (data.recenttracks && data.recenttracks.track && data.recenttracks.track.length > 0) {
+                            var track = data.recenttracks.track[0];
+
+                            // Check if the track is currently playing
+                            if (track["@attr"] && track["@attr"].nowplaying === "true") {
+                                var artist = track.artist['#text'];
+                                var trackName = track.name;
+                                var imageUrl = track.image.find(function(image) {
+                                    return image.size === 'large';
+                                })['#text'];
+
+                                // Populating HTML elements
+                                $('.media-item-lastfm img').attr('src', imageUrl);
+                                $('.media-item-lastfm .title').text(trackName);
+                                $('.media-item-lastfm .subtitle').text(artist);
+
+                                $('.media-item-lastfm').addClass("playing");
+                                $('.media-item-lastfm').removeClass("stopped");
+
+                                // Update lastTimestamp
+                                lastTimestamp = parseInt(track.date.uts); // Update lastTimestamp with the current track's timestamp
+                            } else {
+                                // Clear HTML elements if no track is currently playing
+                                $('.media-item-lastfm img').attr('src', '');
+                                $('.media-item-lastfm .title').text('');
+                                $('.media-item-lastfm .subtitle').text('');
+
+                                $('.media-item-lastfm').addClass("stopped");
+
+                                console.log("No track is currently playing.");
+                            }
+                        } else {
+                            console.log("No track data found in the response.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error:", error); // Debugging statement to see any error message
+                    }
+                });
+            }
+
+            // Initial call to update track data
+            updateTrackData();
+
+            // Set interval to update track data every 30 seconds
+            setInterval(updateTrackData, 30000); // 30 seconds
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
