@@ -173,7 +173,7 @@
             function fetchLastfmData() {
                 $.getJSON(lastfmApiUrl, function(data) {
                     if (data.recenttracks.track.length > 0 && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying === 'true') {
-                        console.log(data);
+                        // console.log(data);
                         var track = data.recenttracks.track[0];
                         populateHTML(track.image[3]['#text'], 'I\'m currently listening to', track.name, track.artist['#text'], track.url);
                         $('.media').removeClass('stopped');
@@ -196,21 +196,22 @@
                         xhr.setRequestHeader('trakt-api-key', traktKey);
                     },
                     success: function(data) {
-                        console.log(data); // Log the response to see the structure of the data
+                        // console.log(data);
                         if (data.length > 0) {
                             var lastWatchedItem = data[0];
                             var itemType = lastWatchedItem.type;
                             var itemName, itemSubtitle;
+                            var itemAction = lastWatchedItem.action;
 
                             var currentDateTime  = moment(new Date());
                             var lastWatchedItemDateTime  = moment(new Date(lastWatchedItem.watched_at));
                             var timeDifference = moment.duration(currentDateTime.diff(lastWatchedItemDateTime)).asHours();
 
-                            console.log("watched time: " + lastWatchedItemDateTime);
-                            console.log("current time: " + currentDateTime);
-                            console.log("difference: " + timeDifference);
+                            // console.log("watched time: " + lastWatchedItemDateTime);
+                            // console.log("current time: " + currentDateTime);
+                            // console.log("difference: " + timeDifference);
 
-                            if(timeDifference < 0.75){
+                            if(timeDifference < 0.75 && itemAction == "checkin"){
                                 var itemShowNumbers = "";
                                 if (itemType === 'episode') {
                                     itemName = lastWatchedItem.show.title;
@@ -241,9 +242,9 @@
                             
                         }
                     },
-                    error: function(xhr, status, error) {
-                        console.log('Error: ' + error);
-                    }
+                    // error: function(xhr, status, error) {
+                    //     console.log('Error: ' + error);
+                    // }
                 });
             }
 
