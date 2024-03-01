@@ -164,6 +164,9 @@
             var traktUsername = 'amogl';
             var traktApiUrl = 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1';
             // var traktApiUrl = '/test-trakt-data.json';
+            var traktUrl = "//trakt.tv/";
+            // var tvdbKey = "2ada08a7-aab2-4164-8317-3b8a299c1d6e";
+            // var tvdbPosterUrl = "https://artworks.thetvdb.com/banners/";
 
 
             //--Last fm
@@ -211,14 +214,19 @@
                                 var itemShowNumbers = "";
                                 if (itemType === 'episode') {
                                     itemName = lastWatchedItem.show.title;
+                                    itemUrl = traktUrl + 'shows/' + lastWatchedItem.show.ids.slug;
                                     itemSubtitle = "S" + lastWatchedItem.episode.season + "E" + lastWatchedItem.episode.number + " " + lastWatchedItem.episode.title;
+                                    itemImage = "https://artworks.thetvdb.com/banners/posters/" + lastWatchedItem.show.ids.tvdb + "-1.jpg";
+
                                 } else if (itemType === 'movie') {
                                     itemName = lastWatchedItem.movie.title;
+                                    itemUrl = traktUrl + 'movies/' + lastWatchedItem.movie.ids.slug;
                                     itemSubtitle = lastWatchedItem.movie.year;
+                                    itemImage = "/images/movie-placeholder.jpg";
                                 }
                                 $('.media').removeClass('stopped');
                                 $('.media').addClass('playing');
-                                populateHTML('', 'I\'m currently watching', itemName, itemSubtitle, '');
+                                populateHTML(itemImage, 'I\'m currently watching', itemName, itemSubtitle, itemUrl);
                             }
                             else
                             {
