@@ -148,26 +148,219 @@
     
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="/scripts/moment.js"></script>
+    <script src="/scripts/moment-timezone-with-data-10-year-range.js"></script>
+
 
     <script>
-
-
-
         
+        $(document).ready(function() {
+            var lastfmKey = '13b29c7c9664ac4eb57a61b39713ee80';
+            var lastfmUsername = 'amogl';
+            var lastfmApiUrl = "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=" + lastfmUsername + "&api_key=" + lastfmKey + "&format=json&limit=1";
+            var traktKey = '0d0477ed0e9cf3fdca652206c98c2adf513ad01199daa9418b2b233a7cb84f15';
+            var traktUsername = 'amogl';
+            var traktApiUrl = 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1';
+
+
+            //--Last fm
+            function fetchLastfmData() {
+                $.getJSON(lastfmApiUrl, function(data) {
+                    if (data.recenttracks.track.length > 0 && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying === 'true') {
+                        console.log(data);
+                        var track = data.recenttracks.track[0];
+                        populateHTML(track.image[3]['#text'], 'I am currently listening to', track.name, track.artist['#text'], track.url);
+                    } else {
+                        fetchTraktData();
+                    }
+                });
+            }
+
+
+            //--Trakt
+            function fetchTraktData() {
+                $.ajax({
+                    url: traktApiUrl,
+                    type: 'GET',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.setRequestHeader('trakt-api-version', '2');
+                        xhr.setRequestHeader('trakt-api-key', traktKey);
+                    },
+                    success: function(data) {
+                        console.log(data); // Log the response to see the structure of the data
+                        if (data.length > 0) {
+                            var lastWatchedItem = data[0];
+                            var itemType = lastWatchedItem.type;
+                            var itemName, itemSubtitle;
+
+                            var itemShowNumbers = "";
+                            if (itemType === 'episode') {
+                                itemName = lastWatchedItem.show.title;
+                                itemSubtitle = "S" + lastWatchedItem.episode.season + "E" + lastWatchedItem.episode.number + " " + lastWatchedItem.episode.title;
+                            } else if (itemType === 'movie') {
+                                itemName = lastWatchedItem.movie.title;
+                                itemSubtitle = lastWatchedItem.movie.year;
+                            }
+
+                            populateHTML('', 'I am currently watching', itemName, itemSubtitle, '');
+                            
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Error: ' + error);
+                    }
+                });
+            }
+
+
+            // Function to populate HTML
+            function populateHTML(imageSrc, introText, titleText, subtitleText, url) {
+                $('.media').removeClass('stopped');
+                $('.media-item').attr('href', url);
+                $('.artwork img').attr('src', imageSrc);
+                $('.intro').text(introText);
+                $('.title').text(titleText);
+                $('.subtitle').text(subtitleText);
+            }
+
+
+            // Initiate the process and set interval to refresh every 5 seconds
+            fetchLastfmData();
+            setInterval(function() {
+                fetchLastfmData();
+            }, 5000);
+
+
+
+
+
+        });
+
+
+
+
+    </script>
+
+
+
+
+
+
+    <!--
+    <script>
+        $(document).ready(function() {
+            var lastfmApiKey = '13b29c7c9664ac4eb57a61b39713ee80';
+            var lastfmUsername = 'amogl';
+            var traktApiKey = '0d0477ed0e9cf3fdca652206c98c2adf513ad01199daa9418b2b233a7cb84f15';
+            var traktUsername = 'amogl';
+
+            // Function to fetch Lastfm data
+            function fetchLastfmData() {
+                $.getJSON('https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + lastfmUsername + '&api_key=' + lastfmApiKey + '&format=json&limit=1', function(data) {
+                    if (data.recenttracks.track.length > 0 && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying === 'true') {
+                        var track = data.recenttracks.track[0];
+                        populateHTML(track.image[3]['#text'], 'I am currently listening to', track.name, track.artist['#text']);
+                    } else {
+                        fetchTraktData();
+                    }
+                });
+            }
+
+            // Function to fetch Trakt data
+            function fetchTraktData() {
+                $.ajax({
+                    url: 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1',
+                    type: 'GET',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.setRequestHeader('trakt-api-version', '2');
+                        xhr.setRequestHeader('trakt-api-key', traktApiKey);
+                    },
+                    success: function(data) {
+                        console.log(data); // Log the response to see the structure of the data
+                        if (data.length > 0) {
+                            var lastWatchedItem = data[0];
+                            var itemType = lastWatchedItem.type;
+                            var itemName, itemSubtitle;
+
+                            var itemShowNumbers = "";
+                            if (itemType === 'episode') {
+                                itemName = lastWatchedItem.show.title;
+                                itemSubtitle = lastWatchedItem.episode.title;
+                                itemSeasonNumber = lastWatchedItem.episode.season;
+                                itemEpisodeNumber = lastWatchedItem.episode.number;
+                                itemShowNumbers = "S" + itemSeasonNumber + "E" + itemEpisodeNumber + " ";
+                            } else if (itemType === 'movie') {
+                                itemName = lastWatchedItem.movie.title;
+                                itemSubtitle = lastWatchedItem.movie.year;
+                            }
+
+                            // Populate HTML elements with data
+                            $('.media-item-trakt .title').text(itemName);
+                            $('.media-item-trakt .subtitle').text(itemShowNumbers + itemSubtitle);
+                            
+                            // You'll need to fetch images from another service based on the IDs provided by Trakt
+                            // Add code here to fetch images from TMDB, IMDB, or another service
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Error: ' + error);
+                    }
+                });
+            }
+
+            // Function to populate HTML
+            function populateHTML(imageSrc, introText, titleText, subtitleText) {
+                $('.media').removeClass('stopped');
+                $('.media-item').attr('href', ''); // Set href blank for now
+                $('.artwork img').attr('src', imageSrc);
+                $('.intro').text(introText);
+                $('.title').text(titleText);
+                $('.subtitle').text(subtitleText);
+            }
+
+            // Initiate the process and set interval to refresh every 5 seconds
+            fetchLastfmData();
+            setInterval(function() {
+                fetchLastfmData();
+            }, 5000);
+        });
+    </script>
+    -->
+
+
+
+
+
+    <!-- <script>
+
         $(document).ready(function(){
 
-            // Function to fetch and update track data
+
+            //--Api
+            var lastfmKey = "13b29c7c9664ac4eb57a61b39713ee80";
+            var lastfmUsername = "amogl";
+            var lastfmApiUrl = "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=" + lastfmUsername + "&api_key=" + lastfmKey + "&format=json&limit=1";
+
+            var traktAPIKey = '0d0477ed0e9cf3fdca652206c98c2adf513ad01199daa9418b2b233a7cb84f15';
+            var traktUsername = 'amogl';
+            var traktApiUrl = 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1';
+
+            //--Media details
+            var mediaIntro = "";
+            var mediaArtwork = "";
+            var mediaTitle = "";
+            var mediaSubtitle = "";
+            var mediaLink = "";
+
+            //--Status
+            var lastfmActive = false;
+            var trackActive = false;
+
+
+            // Fetch and update media data
             function updateMediaData() {
-
-                var traktAPIKey = '0d0477ed0e9cf3fdca652206c98c2adf513ad01199daa9418b2b233a7cb84f15';
-                var traktUsername = 'amogl';
-                var traktApiUrl = 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1';
-
-                var mediaIntro = "";
-                var mediaArtwork = "";
-                var mediaTitle = "";
-                var mediaSubtitle = "";
-                var mediaLink = "";
 
                 function populateData() {
                     $('.media-item .intro').text(mediaIntro);
@@ -184,9 +377,21 @@
                     $('.media-item').attr('href', "");
                 }
 
+                function mediaPlayingCheck(){
+                    if(lastfmActive == true || trackActive == true){
+                        console.log("media is playing")
+                        $(".media").removeClass("stopped");
+                        $(".media").addClass("playing");
+                    }
+                    else{
+                        console.log("media is not playing")
+                        $(".media").addClass("stopped");
+                    }
+                }
+
                 //--Lastfm
                 $.ajax({
-                    url: 'https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=amogl&api_key=13b29c7c9664ac4eb57a61b39713ee80&format=json&limit=1',
+                    url: lastfmApiUrl,
                     dataType: 'json',
                     success: function(data) {
 
@@ -203,85 +408,101 @@
                                 mediaSubtitle = track.artist['#text'];
                                 mediaLink = track.url;
 
+                                lastfmActive = true;
+
                                 populateData();
 
                             } else {
 
                                 setTimeout(function (){
                                     //clearData();
+                                    lastfmActive = false;
                                 }, 2000);
 
-                                console.log("No track is currently playing.");
+                                // console.log("No track is currently playing.");
                             }
                         } else {
-                            console.log("No track data found in the response.");
+                            // console.log("No track data found in the response.");
                         }
                     },
                 });
+
+
 
                 //--Trakt
-                $.ajax({
-                    url: traktApiUrl,
-                    type: 'GET',
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader('Content-Type', 'application/json');
-                        xhr.setRequestHeader('trakt-api-version', '2');
-                        xhr.setRequestHeader('trakt-api-key', traktAPIKey);
-                    },
-                    success: function(data) {
-                        if (data.length > 0) {
-                            var lastWatchedItem = data[0];
-                            var itemType = lastWatchedItem.type;
-                            var itemName, itemSubtitle;
+                if(lastfmActive == false){
+                    $.ajax({
+                        url: traktApiUrl,
+                        type: 'GET',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('Content-Type', 'application/json');
+                            xhr.setRequestHeader('trakt-api-version', '2');
+                            xhr.setRequestHeader('trakt-api-key', traktAPIKey);
+                        },
+                        success: function(data) {
+                            if (data.length > 0) {
 
-                            var itemShowNumbers = "";
+                                // console.log(data);
+
+                                var lastWatchedItem = data[0];
+
+                                var lastWatchedItemDateTime = moment(lastWatchedItem.watched_at).format('DD/MM/YYYY HH:MM');
+                                var currentDateTime = moment().format('DD/MM/YYYY HH:MM');
+                                //var timeDifference = currentDateTime.diff(lastWatchedItemDateTime, 'minutes');
+
+                                var itemType = lastWatchedItem.type;
+                                var itemName, itemSubtitle;
+                                var itemShowNumbers = "";
+
+                                console.log("Watch time: " + lastWatchedItemDateTime);
+                                console.log("Current time: " + currentDateTime);
+
+                                //console.log(timeDifference);
+
+                                // if(timeDifference > 60){
+                                //     trackActive = true;
+                                // }
+                                // else{
+
+                                // }
+                                
+                                mediaIntro = "I'm currently watching";
+
+                                if (itemType === 'episode') {
+
+                                    itemSubtitle = lastWatchedItem.episode.title;
+                                    itemSeasonNumber = lastWatchedItem.episode.season;
+                                    itemEpisodeNumber = lastWatchedItem.episode.number;
+                                    itemShowNumbers = "S" + itemSeasonNumber + "E" + itemEpisodeNumber + " ";
+
+                                    //mediaArtwork = "";
+                                    mediaTitle = lastWatchedItem.show.title;
+                                    mediaSubtitle = itemShowNumbers + itemSubtitle;
+                                    //mediaLink = track.url;
+
+                                    populateData();
+
+                                } else if (itemType === 'movie') {
+                                    
+                                    //mediaArtwork = "";
+                                    mediaTitle = lastWatchedItem.movie.title;
+                                    mediaSubtitle = lastWatchedItem.movie.year;
+                                    //mediaLink = track.url;
+                                    
+                                    populateData();
+                                }
                             
-                            mediaIntro = "I'm currently watching";
-
-                            if (itemType === 'episode') {
-
-                                itemSubtitle = lastWatchedItem.episode.title;
-                                itemSeasonNumber = lastWatchedItem.episode.season;
-                                itemEpisodeNumber = lastWatchedItem.episode.number;
-                                itemShowNumbers = "S" + itemSeasonNumber + "E" + itemEpisodeNumber + " ";
-
-                                //mediaArtwork = "";
-                                mediaTitle = lastWatchedItem.show.title;
-                                mediaSubtitle = itemShowNumbers + itemSubtitle;
-                                //mediaLink = track.url;
-
-                                populateData();
-
-                            } else if (itemType === 'movie') {
-                                
-                                //mediaArtwork = "";
-                                mediaTitle = lastWatchedItem.movie.title;
-                                mediaSubtitle = lastWatchedItem.movie.year;
-                                //mediaLink = track.url;
-                                
-                                populateData();
                             }
-
-                            // $('.media-item-trakt .title').text(itemName);
-                            // $('.media-item-trakt .subtitle').text(itemShowNumbers + itemSubtitle);
-                        
+                        },
+                        error: function(err) {
+                            console.log('Error: ' + err);
                         }
-                    },
-                    error: function(err) {
-                        console.log('Error: ' + err);
-                    }
-                });
-
-
-
-
-
-
+                    });
+                }
 
 
                 //--Update colour
                 // $('.media-item-lastfm').fillColor();
-
 
 
             }
@@ -295,11 +516,11 @@
 
             // Set interval to update track data every 30 seconds
             setInterval(updateMediaData, 5000); // 30 seconds
+
+
         });
-
-
-
-    </script>
+    
+    </script> -->
 
 </body>
 
