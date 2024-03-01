@@ -112,13 +112,15 @@
                 font-size: 12px; opacity: 0.6; margin-top: 0.3125rem;
                 white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
             }
+        }
 
+        .media{
+            transition: 0.3s ease all;
             &.playing{
 
             }
             &.stopped{
-                /* opacity: 0;
-                height: 0; */
+                opacity: 0;
             }
         }
     </style>
@@ -149,7 +151,7 @@
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="/scripts/moment.js"></script>
-    <script src="/scripts/moment-timezone-with-data-10-year-range.js"></script>
+    <!-- <script src="/scripts/moment-timezone-with-data-10-year-range.js"></script> -->
 
 
     <script>
@@ -161,6 +163,7 @@
             var traktKey = '0d0477ed0e9cf3fdca652206c98c2adf513ad01199daa9418b2b233a7cb84f15';
             var traktUsername = 'amogl';
             var traktApiUrl = 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1';
+            // var traktApiUrl = '/test-trakt-data.json';
 
 
             //--Last fm
@@ -169,7 +172,9 @@
                     if (data.recenttracks.track.length > 0 && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying === 'true') {
                         console.log(data);
                         var track = data.recenttracks.track[0];
-                        populateHTML(track.image[3]['#text'], 'I am currently listening to', track.name, track.artist['#text'], track.url);
+                        populateHTML(track.image[3]['#text'], 'I\'m currently listening to', track.name, track.artist['#text'], track.url);
+                        $('.media').removeClass('stopped');
+                        $('.media').addClass('playing');
                     } else {
                         fetchTraktData();
                     }
@@ -194,16 +199,37 @@
                             var itemType = lastWatchedItem.type;
                             var itemName, itemSubtitle;
 
-                            var itemShowNumbers = "";
-                            if (itemType === 'episode') {
-                                itemName = lastWatchedItem.show.title;
-                                itemSubtitle = "S" + lastWatchedItem.episode.season + "E" + lastWatchedItem.episode.number + " " + lastWatchedItem.episode.title;
-                            } else if (itemType === 'movie') {
-                                itemName = lastWatchedItem.movie.title;
-                                itemSubtitle = lastWatchedItem.movie.year;
-                            }
+                            var currentDateTime  = moment(new Date());
+                            var lastWatchedItemDateTime  = moment(new Date(lastWatchedItem.watched_at));
+                            var timeDifference = moment.duration(currentDateTime.diff(lastWatchedItemDateTime)).asHours();
 
-                            populateHTML('', 'I am currently watching', itemName, itemSubtitle, '');
+                            console.log("watched time: " + lastWatchedItemDateTime);
+                            console.log("current time: " + currentDateTime);
+                            console.log("difference: " + timeDifference);
+
+                            if(timeDifference < 0.75){
+                                var itemShowNumbers = "";
+                                if (itemType === 'episode') {
+                                    itemName = lastWatchedItem.show.title;
+                                    itemSubtitle = "S" + lastWatchedItem.episode.season + "E" + lastWatchedItem.episode.number + " " + lastWatchedItem.episode.title;
+                                } else if (itemType === 'movie') {
+                                    itemName = lastWatchedItem.movie.title;
+                                    itemSubtitle = lastWatchedItem.movie.year;
+                                }
+                                $('.media').removeClass('stopped');
+                                $('.media').addClass('playing');
+                                populateHTML('', 'I\'m currently watching', itemName, itemSubtitle, '');
+                            }
+                            else
+                            {
+                                $('.media').removeClass('playing');
+                                $('.media').addClass('stopped');
+
+                                setTimeout(function (){
+                                    clearHTML();
+                                }, 2000);
+                                
+                            }
                             
                         }
                     },
@@ -216,12 +242,19 @@
 
             // Function to populate HTML
             function populateHTML(imageSrc, introText, titleText, subtitleText, url) {
-                $('.media').removeClass('stopped');
                 $('.media-item').attr('href', url);
                 $('.artwork img').attr('src', imageSrc);
                 $('.intro').text(introText);
                 $('.title').text(titleText);
                 $('.subtitle').text(subtitleText);
+            }
+
+            function clearHTML(){
+                $('.media-item').attr('href', '');
+                $('.artwork img').attr('src', '');
+                $('.intro').text('');
+                $('.title').text('');
+                $('.subtitle').text('');
             }
 
 

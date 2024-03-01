@@ -1,0 +1,32 @@
+[
+    {
+        "id": 9568930628,
+        "watched_at": "2024-03-01T14:55:00.000Z",
+        "action": "scrobble",
+        "type": "episode",
+        "episode": {
+            "season": 3,
+            "number": 9,
+            "title": "The Convict",
+            "ids": {
+                "trakt": 182053,
+                "tvdb": 312505,
+                "imdb": "tt0900677",
+                "tmdb": 170166,
+                "tvrage": null
+            }
+        },
+        "show": {
+            "title": "The Office",
+            "year": 2005,
+            "ids": {
+                "trakt": 2302,
+                "slug": "the-office",
+                "tvdb": 73244,
+                "imdb": "tt0386676",
+                "tmdb": 2316,
+                "tvrage": null
+            }
+        }
+    }
+]
