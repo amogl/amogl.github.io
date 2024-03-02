@@ -162,8 +162,8 @@
             var lastfmApiUrl = "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=" + lastfmUsername + "&api_key=" + lastfmKey + "&format=json&limit=1";
             var traktKey = '0d0477ed0e9cf3fdca652206c98c2adf513ad01199daa9418b2b233a7cb84f15';
             var traktUsername = 'amogl';
-            var traktApiUrl = 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1';
-            // var traktApiUrl = '/test-trakt-data.json';
+            // var traktApiUrl = 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1';
+            var traktApiUrl = '/test-trakt-data.json';
             var traktUrl = "//trakt.tv/";
             // var tvdbKey = "2ada08a7-aab2-4164-8317-3b8a299c1d6e";
             // var tvdbPosterUrl = "https://artworks.thetvdb.com/banners/";
@@ -205,13 +205,13 @@
 
                             var currentDateTime  = moment(new Date());
                             var lastWatchedItemDateTime  = moment(new Date(lastWatchedItem.watched_at));
-                            var timeDifference = moment.duration(currentDateTime.diff(lastWatchedItemDateTime)).asHours();
+                            var timeDifference = moment.duration(currentDateTime.diff(lastWatchedItemDateTime)).asMinutes();
 
-                            // console.log("watched time: " + lastWatchedItemDateTime);
-                            // console.log("current time: " + currentDateTime);
-                            // console.log("difference: " + timeDifference);
+                            console.log("watched time: " + lastWatchedItemDateTime);
+                            console.log("current time: " + currentDateTime);
+                            console.log("difference: " + timeDifference);
 
-                            if(timeDifference < 0.75 && itemAction == "checkin"){
+                            if(timeDifference < 45 && itemAction == "checkin"){
                                 var itemShowNumbers = "";
                                 if (itemType === 'episode') {
                                     itemName = lastWatchedItem.show.title;
@@ -272,9 +272,6 @@
             setInterval(function() {
                 fetchLastfmData();
             }, 5000);
-
-
-
 
 
         });
