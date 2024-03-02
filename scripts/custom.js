@@ -110,11 +110,15 @@ $(document).ready(function() {
     }
 
 
-    // Initiate the process and set interval to refresh every 5 seconds
-    fetchLastfmData();
+    // Initally load the data
+    setTimeout(function (){
+        fetchLastfmData();
+    }, 2500);
+    
+    // Check for new data
     setInterval(function() {
         fetchLastfmData();
-    }, 30000);
+    }, 15000);
 
 
 });
