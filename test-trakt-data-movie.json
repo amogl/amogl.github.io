@@ -1,0 +1,18 @@
+[
+    {
+        "id": 9564384550,
+        "watched_at": "2024-03-07T18:30:00.000Z",
+        "action": "checkin",
+        "type": "movie",
+        "movie": {
+            "title": "Avatar",
+            "year": 2009,
+            "ids": {
+                "trakt": 12269,
+                "slug": "avatar-2009",
+                "imdb": "tt0499549",
+                "tmdb": 19995
+            }
+        }
+    }
+]

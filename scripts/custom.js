@@ -5,10 +5,9 @@ $(document).ready(function() {
     var traktKey = '0d0477ed0e9cf3fdca652206c98c2adf513ad01199daa9418b2b233a7cb84f15';
     var traktUsername = 'amogl';
     var traktApiUrl = 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1';
-    // var traktApiUrl = '/test-trakt-data.json';
+    // var traktApiUrl = '/test-trakt-data-movie.json';
     var traktUrl = "//trakt.tv/";
-    // var tvdbKey = "2ada08a7-aab2-4164-8317-3b8a299c1d6e";
-    // var tvdbPosterUrl = "https://artworks.thetvdb.com/banners/";
+    var tmdbKey = 'ff6121cd1177652d2ed772bf66933d02';
 
 
     //--Last fm
@@ -49,27 +48,23 @@ $(document).ready(function() {
                     var lastWatchedItemDateTime  = moment(new Date(lastWatchedItem.watched_at));
                     var timeDifference = moment.duration(currentDateTime.diff(lastWatchedItemDateTime)).asMinutes();
 
-                    // console.log("watched time: " + lastWatchedItemDateTime);
-                    // console.log("current time: " + currentDateTime);
-                    // console.log("difference: " + timeDifference);
-
                     if(timeDifference < 45 && itemAction == "checkin"){
                         var itemShowNumbers = "";
                         if (itemType === 'episode') {
                             itemName = lastWatchedItem.show.title;
                             itemUrl = traktUrl + 'shows/' + lastWatchedItem.show.ids.slug;
                             itemSubtitle = "S" + lastWatchedItem.episode.season + "E" + lastWatchedItem.episode.number + " " + lastWatchedItem.episode.title;
-                            itemImage = "https://artworks.thetvdb.com/banners/posters/" + lastWatchedItem.show.ids.tvdb + "-1.jpg";
+                            getPoster('show',lastWatchedItem.show.ids.tmdb); 
 
                         } else if (itemType === 'movie') {
                             itemName = lastWatchedItem.movie.title;
                             itemUrl = traktUrl + 'movies/' + lastWatchedItem.movie.ids.slug;
                             itemSubtitle = lastWatchedItem.movie.year;
-                            itemImage = "/images/movie-placeholder.jpg";
+                            getPoster('movie',lastWatchedItem.movie.ids.tmdb); 
                         }
                         $('.media').removeClass('stopped');
                         $('.media').addClass('playing');
-                        populateHTML(itemImage, 'I\'m currently watching', itemName, itemSubtitle, itemUrl);
+                        populateHTML(null,'I\'m currently watching', itemName, itemSubtitle, itemUrl);
                     }
                     else
                     {
@@ -91,16 +86,17 @@ $(document).ready(function() {
     }
 
 
-    // Function to populate HTML
-    function populateHTML(imageSrc, introText, titleText, subtitleText, url) {
+    // Populate HTML
+    function populateHTML(itemImage, introText, titleText, subtitleText, url) {
         $('.media-item').attr('href', url);
-        $('.artwork img').attr('src', imageSrc);
+        $('.artwork img').attr('src', itemImage);
         $('.intro').text(introText);
         $('.title').text(titleText);
         $('.subtitle').text(subtitleText);
         $('.media-item').fillColor();
     }
 
+    // Clear html
     function clearHTML(){
         $('.media-item').attr('href', '');
         $('.artwork img').attr('src', '');
@@ -108,6 +104,38 @@ $(document).ready(function() {
         $('.title').text('');
         $('.subtitle').text('');
     }
+
+    // Get poster from tmdb
+    function getPoster(mediaType,showOrMovieId){
+        var tmdbUrl = 'https://api.themoviedb.org/3/';
+        var imageUrl = 'https://image.tmdb.org/t/p/w300';
+    
+        var endpoint = '';
+        if(mediaType == "show"){
+            endpoint = 'tv/' + showOrMovieId;
+        }
+        else{
+            endpoint = 'movie/' + showOrMovieId;
+        }
+        
+        $.ajax({
+            url: tmdbUrl + endpoint,
+            type: 'GET',
+            data: {
+                api_key: tmdbKey
+            },
+            success: function(data) {
+                if (data.poster_path) {
+                    var itemImage = imageUrl + data.backdrop_path;
+                    $('.artwork img').attr('src', itemImage);
+                }
+            },
+            error: function(err) {
+                console.log('Error: ' + err.responseText);
+            }
+        });
+    }
+
 
 
     // Initally load the data
