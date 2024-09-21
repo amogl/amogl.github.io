@@ -90,10 +90,11 @@ $(document).ready(function() {
     function populateHTML(itemImage, introText, titleText, subtitleText, url) {
         $('.media-item').attr('href', url);
         $('.artwork img').attr('src', itemImage);
+        $('.bg img').attr('src', itemImage);
         $('.intro').text(introText);
         $('.title').text(titleText);
         $('.subtitle').text(subtitleText);
-        $('.media-item').fillColor();
+        // $('.media .bg').fillColor();
     }
 
     // Clear html
@@ -146,7 +147,7 @@ $(document).ready(function() {
     // Check for new data
     setInterval(function() {
         fetchLastfmData();
-    }, 15000);
+    }, 5000);
 
 
 });
