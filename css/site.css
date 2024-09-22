@@ -18,6 +18,7 @@
 /*----------PX to REM----------*/
 /*----------Gradients----------*/
 /*----------Text colour----------*/
+/*----------Webkit safe area (iPhones with notches)----------*/
 /*------------------------------*/
 /*----------Variables----------*/
 /*------------------------------*/
@@ -54,6 +55,7 @@
 /*----------PX to REM----------*/
 /*----------Gradients----------*/
 /*----------Text colour----------*/
+/*----------Webkit safe area (iPhones with notches)----------*/
 /*------------------------------*/
 /*----------Variables----------*/
 /*------------------------------*/
@@ -161,6 +163,12 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.topsection .wrapper {
+  padding-left: 1.875rem;
+  padding-left: max(1.875rem, env(safe-area-inset-left));
+  padding-right: 1.875rem;
+  padding-right: max(1.875rem, env(safe-area-inset-right));
 }
 
 .footer {
@@ -379,8 +387,13 @@ a.media-item:hover, a.media-item:focus {
 .media-item {
   z-index: 2;
   transition: opacity 1s, height 1s, background-color 2s, transform 0.5s;
-  margin-top: 0.625rem;
-  margin-bottom: 1.25rem;
+  padding-top: 0.625rem;
+  padding-bottom: 1.25rem;
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  padding-left: 0;
+  padding-left: max(0, env(safe-area-inset-left));
+  padding-right: 0;
+  padding-right: max(0, env(safe-area-inset-right));
   display: flex;
   align-items: center;
   max-width: calc(100vw - 2.5rem);

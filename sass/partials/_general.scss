@@ -69,6 +69,11 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    .wrapper{
+        @include safe-area-max(padding-left, 1.875rem, left); @include safe-area-max(padding-right, 1.875rem, right);
+    }
+
 }
 
 
@@ -249,8 +254,11 @@ a.media-item{
 }
 .media-item{
     z-index: 2;
-    transition: opacity 1s, height 1s, background-color 2s, transform 0.5s; margin-top: 0.625rem;
-    margin-bottom: 1.25rem;
+    transition: opacity 1s, height 1s, background-color 2s, transform 0.5s; 
+    padding-top: 0.625rem;
+    @include safe-area-max(padding-bottom, 1.25rem, bottom);
+    @include safe-area-max(padding-left, 0, left);
+    @include safe-area-max(padding-right, 0, right);
     display: flex;
     align-items: center;
     max-width: calc(100vw - 2.5rem);

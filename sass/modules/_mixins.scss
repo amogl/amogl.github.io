@@ -214,3 +214,13 @@
         color: mix(#000, $c1, 70%);
     }
 }
+
+/*----------Webkit safe area (iPhones with notches)----------*/
+@mixin safe-area-max($property, $value, $position){
+	#{$property}: #{$value};
+	#{$property}: m#{a}x(#{$value}, env(safe-area-inset-#{$position})); 	
+}
+@mixin safe-area-min($property, $value, $position){
+	#{$property}: #{$value};
+	#{$property}: m#{i}n(#{$value}, env(safe-area-inset-#{$position})); 	
+}
