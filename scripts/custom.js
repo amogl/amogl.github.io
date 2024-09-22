@@ -101,6 +101,7 @@ $(document).ready(function() {
     function clearHTML(){
         $('.media-item').attr('href', '');
         $('.artwork img').attr('src', '');
+        $('.bg img').attr('src', '');
         $('.intro').text('');
         $('.title').text('');
         $('.subtitle').text('');
@@ -129,6 +130,7 @@ $(document).ready(function() {
                 if (data.poster_path) {
                     var itemImage = imageUrl + data.backdrop_path;
                     $('.artwork img').attr('src', itemImage);
+                    $('.bg img').attr('src', itemImage);
                 }
             },
             error: function(err) {
