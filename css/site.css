@@ -400,11 +400,6 @@ a.media-item:hover, a.media-item:focus {
   color: currentColor;
   text-decoration: none;
 }
-@media screen and (min-width: 480px) {
-  .media-item {
-    padding-right: 2.5rem;
-  }
-}
 @media screen and (max-width: 480px) {
   .media-item {
     flex-direction: column;
