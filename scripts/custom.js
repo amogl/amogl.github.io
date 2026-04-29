@@ -79,8 +79,9 @@ $(document).ready(function() {
                     
                 }
             },
-            // error: function(xhr, status, error) {
-            //     console.log('Error: ' + error);
+            error: function(xhr) {
+            //     console.log('Status:', xhr.status);
+            //     console.log('Response:', xhr.responseText);
             // }
         });
     }
