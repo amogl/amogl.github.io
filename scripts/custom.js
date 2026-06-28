@@ -80,9 +80,9 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr) {
-            //     console.log('Status:', xhr.status);
-            //     console.log('Response:', xhr.responseText);
-            // }
+                // console.log('Status:', xhr.status);
+                // console.log('Response:', xhr.responseText);
+            }
         });
     }
 
