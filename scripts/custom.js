@@ -2,155 +2,123 @@ $(document).ready(function() {
     var lastfmKey = '13b29c7c9664ac4eb57a61b39713ee80';
     var lastfmUsername = 'amogl';
     var lastfmApiUrl = "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=" + lastfmUsername + "&api_key=" + lastfmKey + "&format=json&limit=1";
-    var traktKey = '0d0477ed0e9cf3fdca652206c98c2adf513ad01199daa9418b2b233a7cb84f15';
-    var traktUsername = 'amogl';
-    var traktApiUrl = 'https://api.trakt.tv/users/' + traktUsername + '/history?limit=1';
-    // var traktApiUrl = '/test-trakt-data-movie.json';
-    var traktUrl = "//trakt.tv/";
+    var traktKey = 'joR3XWhgpP38DhLjqDitVb9i0NXFEOCh0Op1ylAoEkU';
+    var traktWatchingUrl = 'https://api.trakt.tv/users/amogl/watching';
     var tmdbKey = 'ff6121cd1177652d2ed772bf66933d02';
+    var media = $('.media');
+    var artwork = media.find('.artwork img, .bg img');
+    var pollInterval = 5000;
+    var requestTimeout = 8000;
+    var traktRetryDelay = pollInterval;
+    var traktRetryAt = 0;
+    var lastPosterEndpoint;
+    var lastPoster;
 
-
-    //--Last fm
-    function fetchLastfmData() {
-        $.getJSON(lastfmApiUrl, function(data) {
-            if (data.recenttracks.track.length > 0 && data.recenttracks.track[0]['@attr'] && data.recenttracks.track[0]['@attr'].nowplaying === 'true') {
-                // console.log(data);
-                var track = data.recenttracks.track[0];
-                populateHTML(track.image[3]['#text'], 'I\'m currently listening to', track.name, track.artist['#text'], track.url);
-                $('.media').removeClass('stopped');
-                $('.media').addClass('playing');
-            } else {
-                fetchTraktData();
+    async function fetchLastfmTrack() {
+        try {
+            var data = await $.ajax({
+                url: lastfmApiUrl,
+                dataType: 'json',
+                timeout: requestTimeout
+            });
+            var track = data.recenttracks?.track?.[0];
+            if (track?.['@attr']?.nowplaying === 'true') {
+                return track;
             }
-        });
-    }
-
-
-    //--Trakt
-    function fetchTraktData() {
-        $.ajax({
-            url: traktApiUrl,
-            type: 'GET',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.setRequestHeader('trakt-api-version', '2');
-                xhr.setRequestHeader('trakt-api-key', traktKey);
-            },
-            success: function(data) {
-                // console.log(data);
-                if (data.length > 0) {
-                    var lastWatchedItem = data[0];
-                    var itemType = lastWatchedItem.type;
-                    var itemName, itemSubtitle;
-                    var itemAction = lastWatchedItem.action;
-
-                    var currentDateTime  = moment(new Date());
-                    var lastWatchedItemDateTime  = moment(new Date(lastWatchedItem.watched_at));
-                    var timeDifference = moment.duration(currentDateTime.diff(lastWatchedItemDateTime)).asMinutes();
-
-                    if(timeDifference < 45 && itemAction == "checkin"){
-                        var itemShowNumbers = "";
-                        if (itemType === 'episode') {
-                            itemName = lastWatchedItem.show.title;
-                            itemUrl = traktUrl + 'shows/' + lastWatchedItem.show.ids.slug;
-                            itemSubtitle = "S" + lastWatchedItem.episode.season + "E" + lastWatchedItem.episode.number + " " + lastWatchedItem.episode.title;
-                            getPoster('show',lastWatchedItem.show.ids.tmdb); 
-
-                        } else if (itemType === 'movie') {
-                            itemName = lastWatchedItem.movie.title;
-                            itemUrl = traktUrl + 'movies/' + lastWatchedItem.movie.ids.slug;
-                            itemSubtitle = lastWatchedItem.movie.year;
-                            getPoster('movie',lastWatchedItem.movie.ids.tmdb); 
-                        }
-                        $('.media').removeClass('stopped');
-                        $('.media').addClass('playing');
-                        populateHTML(null,'I\'m currently watching', itemName, itemSubtitle, itemUrl);
-                    }
-                    else
-                    {
-                        $('.media').removeClass('playing');
-                        $('.media').addClass('stopped');
-
-                        setTimeout(function (){
-                            clearHTML();
-                        }, 2000);
-                        
-                    }
-                    
-                }
-            },
-            error: function(xhr) {
-                // console.log('Status:', xhr.status);
-                // console.log('Response:', xhr.responseText);
-            }
-        });
-    }
-
-
-    // Populate HTML
-    function populateHTML(itemImage, introText, titleText, subtitleText, url) {
-        $('.media-item').attr('href', url);
-        $('.artwork img').attr('src', itemImage);
-        $('.bg img').attr('src', itemImage);
-        $('.intro').text(introText);
-        $('.title').text(titleText);
-        $('.subtitle').text(subtitleText);
-        // $('.media .bg').fillColor();
-    }
-
-    // Clear html
-    function clearHTML(){
-        $('.media-item').attr('href', '');
-        $('.artwork img').attr('src', '');
-        $('.bg img').attr('src', '');
-        $('.intro').text('');
-        $('.title').text('');
-        $('.subtitle').text('');
-    }
-
-    // Get poster from tmdb
-    function getPoster(mediaType,showOrMovieId){
-        var tmdbUrl = 'https://api.themoviedb.org/3/';
-        var imageUrl = 'https://image.tmdb.org/t/p/w300';
-    
-        var endpoint = '';
-        if(mediaType == "show"){
-            endpoint = 'tv/' + showOrMovieId;
+        } catch {
+            // Trakt can still report playback when Last.fm is unavailable.
         }
-        else{
-            endpoint = 'movie/' + showOrMovieId;
-        }
-        
-        $.ajax({
-            url: tmdbUrl + endpoint,
-            type: 'GET',
-            data: {
-                api_key: tmdbKey
-            },
-            success: function(data) {
-                if (data.poster_path) {
-                    var itemImage = imageUrl + data.backdrop_path;
-                    $('.artwork img').attr('src', itemImage);
-                    $('.bg img').attr('src', itemImage);
-                }
-            },
-            error: function(err) {
-                console.log('Error: ' + err.responseText);
-            }
-        });
     }
 
+    async function fetchTraktPlayback() {
+        if (Date.now() < traktRetryAt) {
+            return;
+        }
 
+        try {
+            var playback = await $.ajax({
+                url: traktWatchingUrl,
+                dataType: 'json',
+                timeout: requestTimeout,
+                headers: {
+                    'trakt-api-version': '2',
+                    'trakt-api-key': traktKey
+                }
+            });
+            traktRetryDelay = pollInterval;
+            traktRetryAt = 0;
+            return playback;
+        } catch (xhr) {
+            traktRetryDelay = Math.min(traktRetryDelay * 2, 300000);
+            var retryAfter = xhr.getResponseHeader?.('Retry-After');
+            var retryAfterMs = /^\d+$/.test(retryAfter) ? Number(retryAfter) * 1000 : Date.parse(retryAfter) - Date.now();
+            traktRetryAt = Date.now() + Math.max(traktRetryDelay, retryAfterMs || 0);
+            console.warn('Trakt playback request failed', xhr.status);
+        }
+    }
 
-    // Initally load the data
-    setTimeout(function (){
-        fetchLastfmData();
-    }, 2500);
-    
-    // Check for new data
-    setInterval(function() {
-        fetchLastfmData();
-    }, 5000);
+    function renderMedia(intro, title, subtitle, url, image) {
+        media.find('.media-item').attr('href', url || null);
+        artwork.attr('src', image || null).toggle(Boolean(image));
+        media.find('.intro').text(intro);
+        media.find('.title').text(title);
+        media.find('.subtitle').text(subtitle ?? '');
+        media.toggleClass('playing', Boolean(title)).toggleClass('stopped', !title);
+    }
 
+    async function updateArtwork(endpoint) {
+        if (endpoint === lastPosterEndpoint) {
+            return;
+        }
 
+        try {
+            var data = await $.ajax({
+                url: 'https://api.themoviedb.org/3/' + endpoint,
+                dataType: 'json',
+                timeout: requestTimeout,
+                data: { api_key: tmdbKey }
+            });
+            var path = data.backdrop_path || data.poster_path;
+            lastPoster = path ? 'https://image.tmdb.org/t/p/w300' + path : null;
+            lastPosterEndpoint = endpoint;
+            artwork.attr('src', lastPoster).toggle(Boolean(lastPoster));
+        } catch {
+            // The playback title and link remain available without artwork.
+        }
+    }
+
+    async function refreshMedia() {
+        try {
+            var track = await fetchLastfmTrack();
+            if (track) {
+                renderMedia("I'm currently listening to", track.name, track.artist?.['#text'], track.url, track.image?.[3]?.['#text']);
+                return;
+            }
+
+            var playback = await fetchTraktPlayback();
+            var isEpisode = playback?.type === 'episode';
+            var item = isEpisode ? playback.show : playback?.movie;
+            if (!item?.title) {
+                renderMedia('', '', '', null, null);
+                return;
+            }
+
+            var episode = playback.episode;
+            var subtitle = isEpisode && episode
+                ? ['S' + episode.season + 'E' + episode.number, episode.title].filter(Boolean).join(' ')
+                : item.year;
+            var ids = item.ids;
+            var slug = ids?.slug || ids?.trakt;
+            var url = slug ? 'https://trakt.tv/' + (isEpisode ? 'shows/' : 'movies/') + encodeURIComponent(slug) : null;
+            var endpoint = ids?.tmdb ? (isEpisode ? 'tv/' : 'movie/') + ids.tmdb : null;
+            renderMedia("I'm currently watching", item.title, subtitle, url, endpoint === lastPosterEndpoint ? lastPoster : null);
+            if (endpoint) {
+                await updateArtwork(endpoint);
+            }
+        } finally {
+            setTimeout(refreshMedia, pollInterval);
+        }
+    }
+
+    setTimeout(refreshMedia, 2500);
 });
